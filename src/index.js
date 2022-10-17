@@ -3,27 +3,26 @@ import styles from './styles.module.css'
 
 import { useForm } from 'react-hook-form'
 
-export const Form = ({ text }) => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors }
-  } = useForm()
+import { Button } from '@mui/material'
+import { Container } from './components/MUI/Container'
 
-  const onSubmit = (data) => {
-    window.alert(JSON.stringify(data))
-  }
-
-  console.log(watch('example'))
+export const Form = ({ onSubmit, inputs }) => {
+  const { handleSubmit, control, formState } = useForm({
+    reValidateMode: 'onSubmit'
+  })
 
   return (
-    <div className={styles.test}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input {...register('example', { required: true })} />
-        {errors.example && <span>This is required.</span>}
-        <input type='submit' />
-      </form>
-    </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Container inputs={inputs} control={control} errors={formState.errors} />
+
+      <div>
+        <Button variant='outlined' color='error'>
+          Back
+        </Button>
+        <Button type='submit' variant='contained'>
+          Submit
+        </Button>
+      </div>
+    </form>
   )
 }
